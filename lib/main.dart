@@ -1,0 +1,42 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_sparring/core/bloc/app_bloc_observer.dart';
+import 'package:flutter_sparring/core/di/injection.dart';
+import 'package:flutter_sparring/core/routing/app_router.dart';
+import 'package:flutter_sparring/features/auth/presentation/blocs/auth_cubit.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
+  await configureDependencies();
+  if (kDebugMode) Bloc.observer = AppBlocObserver();
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<AuthCubit>(
+          create: (_) => getIt<AuthCubit>(),
+        ),
+        // add more blocs here
+      ],
+      child: MaterialApp.router(
+        debugShowCheckedModeBanner: false,
+        title: 'Sparring App',
+        routerConfig: appRouter,
+        theme: ThemeData(
+          useMaterial3: true,
+          colorSchemeSeed: Colors.blue,
+        ),
+      ),
+    );
+  }
+}
