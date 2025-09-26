@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'location_remote_datasource.dart';
+part of 'sport_category_remote_datasource.dart';
 
 // dart format off
 
@@ -10,8 +10,8 @@ part of 'location_remote_datasource.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers,unused_element,unnecessary_string_interpolations,unused_element_parameter
 
-class _LocationRemoteDataSource implements LocationRemoteDataSource {
-  _LocationRemoteDataSource(this._dio, {this.baseUrl, this.errorLogger});
+class _SportCategoryRemoteDataSource implements SportCategoryRemoteDataSource {
+  _SportCategoryRemoteDataSource(this._dio, {this.baseUrl, this.errorLogger});
 
   final Dio _dio;
 
@@ -20,7 +20,7 @@ class _LocationRemoteDataSource implements LocationRemoteDataSource {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<PaginatedResponseModel<ProvinceModel>> getProvinces(
+  Future<PaginatedResponseModel<SportCategoryModel>> getSportCategories(
     PaginationRequestModel request,
   ) async {
     final _extra = <String, dynamic>{};
@@ -28,22 +28,22 @@ class _LocationRemoteDataSource implements LocationRemoteDataSource {
     queryParameters.addAll(request.toJson());
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<PaginatedResponseModel<ProvinceModel>>(
+    final _options = _setStreamType<PaginatedResponseModel<SportCategoryModel>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/location/provinces',
+            '/sport-categories',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late PaginatedResponseModel<ProvinceModel> _value;
+    late PaginatedResponseModel<SportCategoryModel> _value;
     try {
-      _value = PaginatedResponseModel<ProvinceModel>.fromJson(
+      _value = PaginatedResponseModel<SportCategoryModel>.fromJson(
         _result.data!,
-        (json) => ProvinceModel.fromJson(json as Map<String, dynamic>),
+        (json) => SportCategoryModel.fromJson(json as Map<String, dynamic>),
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
@@ -53,30 +53,29 @@ class _LocationRemoteDataSource implements LocationRemoteDataSource {
   }
 
   @override
-  Future<PaginatedResponseModel<CityModel>> getCities(
-    PaginationRequestModel request,
+  Future<BaseResponseModel<SportCategoryModel>> createSportCategory(
+    String name,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    queryParameters.addAll(request.toJson());
     final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<PaginatedResponseModel<CityModel>>(
-      Options(method: 'GET', headers: _headers, extra: _extra)
+    final _data = name;
+    final _options = _setStreamType<BaseResponseModel<SportCategoryModel>>(
+      Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/location/cities',
+            '/sport-categories/create',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late PaginatedResponseModel<CityModel> _value;
+    late BaseResponseModel<SportCategoryModel> _value;
     try {
-      _value = PaginatedResponseModel<CityModel>.fromJson(
+      _value = BaseResponseModel<SportCategoryModel>.fromJson(
         _result.data!,
-        (json) => CityModel.fromJson(json as Map<String, dynamic>),
+        (json) => SportCategoryModel.fromJson(json as Map<String, dynamic>),
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
@@ -86,31 +85,62 @@ class _LocationRemoteDataSource implements LocationRemoteDataSource {
   }
 
   @override
-  Future<PaginatedResponseModel<CityModel>> getCitiesByProvince(
-    int provinceId,
-    PaginationRequestModel request,
+  Future<BaseResponseModel<SportCategoryModel>> updateSportCategory(
+    int id,
+    String name,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    queryParameters.addAll(request.toJson());
     final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<PaginatedResponseModel<CityModel>>(
-      Options(method: 'GET', headers: _headers, extra: _extra)
+    final _data = name;
+    final _options = _setStreamType<BaseResponseModel<SportCategoryModel>>(
+      Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/location/cities/${provinceId}',
+            '/sport-categories/update/${id}',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late PaginatedResponseModel<CityModel> _value;
+    late BaseResponseModel<SportCategoryModel> _value;
     try {
-      _value = PaginatedResponseModel<CityModel>.fromJson(
+      _value = BaseResponseModel<SportCategoryModel>.fromJson(
         _result.data!,
-        (json) => CityModel.fromJson(json as Map<String, dynamic>),
+        (json) => SportCategoryModel.fromJson(json as Map<String, dynamic>),
+      );
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<BaseResponseModel<SportCategoryModel>> deleteSportCategory(
+    int id,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<BaseResponseModel<SportCategoryModel>>(
+      Options(method: 'DELETE', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/sport-categories/delete/${id}',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late BaseResponseModel<SportCategoryModel> _value;
+    try {
+      _value = BaseResponseModel<SportCategoryModel>.fromJson(
+        _result.data!,
+        (json) => SportCategoryModel.fromJson(json as Map<String, dynamic>),
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);

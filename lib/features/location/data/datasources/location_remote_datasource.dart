@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_sparring/core/models/paginated_response_model.dart';
 import 'package:flutter_sparring/core/models/pagination_request_model.dart';
 import 'package:injectable/injectable.dart';
 import 'package:retrofit/retrofit.dart';
 import '../models/province_model.dart';
 import '../models/city_model.dart';
-import '../../../../core/models/api_response_model.dart';
 import '../../../../core/constants/api_constants.dart';
 
 part 'location_remote_datasource.g.dart';
@@ -16,17 +16,17 @@ abstract class LocationRemoteDataSource {
   factory LocationRemoteDataSource(Dio dio) = _LocationRemoteDataSource;
 
   @GET(ApiConstants.provincesEndpoint)
-  Future<ApiResponseModel<List<ProvinceModel>>> getProvinces(
+  Future<PaginatedResponseModel<ProvinceModel>> getProvinces(
     @Queries() PaginationRequestModel request,
   );
 
   @GET(ApiConstants.citiesEndpoint)
-  Future<ApiResponseModel<List<CityModel>>> getCities(
+  Future<PaginatedResponseModel<CityModel>> getCities(
     @Queries() PaginationRequestModel request,
   );
 
   @GET(ApiConstants.citiesByProvinceIdEndpoint)
-  Future<ApiResponseModel<List<CityModel>>> getCitiesByProvince(
+  Future<PaginatedResponseModel<CityModel>> getCitiesByProvince(
     @Path('provinceId') int provinceId,
     @Queries() PaginationRequestModel request,
   );

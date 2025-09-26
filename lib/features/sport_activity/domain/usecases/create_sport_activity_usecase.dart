@@ -1,0 +1,56 @@
+import 'package:dartz/dartz.dart';
+import 'package:flutter_sparring/features/sport_activity/domain/entities/sport_activity_entity.dart';
+import 'package:flutter_sparring/features/sport_activity/domain/repositories/sport_activity_repository.dart';
+import 'package:injectable/injectable.dart';
+import '../../../../core/errors/failures.dart';
+
+class CreateSportActivityParams {
+  final int sportCategoryId;
+  final int cityId;
+  final String title;
+  final String description;
+  final int slot;
+  final int? price;
+  final String address;
+  final String activityDate; // keep as String if backend expects YYYY-MM-DD
+  final String startTime;    // e.g. "06:00"
+  final String endTime;      // e.g. "07:00"
+  final String mapUrl;
+
+  const CreateSportActivityParams({
+    required this.sportCategoryId,
+    required this.cityId,
+    required this.title,
+    required this.description,
+    required this.slot,
+    this.price,
+    required this.address,
+    required this.activityDate,
+    required this.startTime,
+    required this.endTime,
+    required this.mapUrl,
+  });
+}
+
+@injectable
+class CreateSportActivityUsecase {
+  final SportActivityRepository repository;
+
+  const CreateSportActivityUsecase(this.repository);
+
+  Future<Either<Failure, SportActivityEntity>> call(CreateSportActivityParams params) async {
+    return await repository.createSportActivity(
+      sportCategoryId: params.sportCategoryId,
+      cityId: params.cityId,
+      title: params.title,
+      description: params.description,
+      slot: params.slot,
+      price: params.price,
+      address: params.address,
+      activityDate: params.activityDate,
+      startTime: params.startTime,
+      endTime: params.endTime,
+      mapUrl: params.mapUrl,
+    );
+  }
+}

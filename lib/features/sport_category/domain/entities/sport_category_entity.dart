@@ -1,10 +1,10 @@
 import 'package:equatable/equatable.dart';
 
-class CategoryEntity extends Equatable {
+class SportCategoryEntity extends Equatable {
   final int id;
   final String name;
 
-  const CategoryEntity({
+  const SportCategoryEntity({
     required this.id,
     required this.name,
   });
@@ -14,14 +14,14 @@ class CategoryEntity extends Equatable {
 
   @override
   String toString() {
-    return 'CategoryEntity(id: $id, name: $name)';
+    return 'SportCategoryEntity(id: $id, name: $name)';
   }
 
-  CategoryEntity copyWith({
+  SportCategoryEntity copyWith({
     int? id,
     String? name,
   }) {
-    return CategoryEntity(
+    return SportCategoryEntity(
       id: id ?? this.id,
       name: name ?? this.name,
     );
