@@ -132,12 +132,3 @@ final appRouter = GoRouter(
     return null;
   },
 );
-
-// Typed routes for easy usage
-LoginRoute get loginRoute => const LoginRoute();
-RegisterRoute get registerRoute => const RegisterRoute();
-HomeRoute get homeRoute => const HomeRoute();
-SearchRoute get searchRoute => const SearchRoute();
-BookingsRoute get bookingsRoute => const BookingsRoute();
-MessagesRoute get messagesRoute => const MessagesRoute();
-ProfileRoute get profileRoute => const ProfileRoute();

@@ -1,4 +1,4 @@
-import 'package:dartz/dartz.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:flutter_sparring/core/errors/failures.dart';
 import 'package:flutter_sparring/core/models/pagination_request_model.dart';
 import 'package:flutter_sparring/core/network/api_error_handler.dart';

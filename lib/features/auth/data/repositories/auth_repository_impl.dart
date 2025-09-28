@@ -1,4 +1,4 @@
-import 'package:dartz/dartz.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:flutter_sparring/core/errors/failure_mapper.dart';
 import 'package:flutter_sparring/core/network/api_error_handler.dart';
 import 'package:injectable/injectable.dart';

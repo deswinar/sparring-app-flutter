@@ -17,7 +17,7 @@ class ProfilePage extends StatelessWidget {
       listener: (context, state) {
         if (state is AuthUnauthenticated) {
           // Navigate to login and clear stack
-          loginRoute.go(context);
+          LoginRoute().go(context);
         } else if (state is AuthError) {
           AppSnackbar.show(
             context,

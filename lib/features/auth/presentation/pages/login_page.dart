@@ -39,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _navigateToRegister() {
-    registerRoute.go(context);
+    RegisterRoute().go(context);
   }
 
   @override
@@ -58,7 +58,7 @@ class _LoginPageState extends State<LoginPage> {
             );
           }
           if (state is AuthAuthenticated) {
-            homeRoute.go(context);
+            HomeRoute().go(context);
           }
         },
         child: SafeArea(

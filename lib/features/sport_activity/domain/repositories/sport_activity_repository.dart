@@ -1,4 +1,4 @@
-import 'package:dartz/dartz.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:flutter_sparring/core/errors/failures.dart';
 import 'package:flutter_sparring/features/sport_activity/domain/entities/sport_activity_entity.dart';
 

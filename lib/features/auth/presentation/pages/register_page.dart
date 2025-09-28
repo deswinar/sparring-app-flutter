@@ -64,7 +64,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 position: SnackbarPosition.bottom,
               );
             } else if (state is AuthAuthenticated) {
-              homeRoute.go(context);
+              HomeRoute().go(context);
             }
           },
           child: SafeArea(
