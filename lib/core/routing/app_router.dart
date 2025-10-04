@@ -114,7 +114,7 @@ class ProfileRoute extends GoRouteData with $ProfileRoute {
 
 /// Root router
 final appRouter = GoRouter(
-  initialLocation: AppRoutes.login,
+  initialLocation: AppRoutes.home,
   routes: $appRoutes,
   redirect: (context, state) {
     final authCubit = context.read<AuthCubit>();
@@ -123,7 +123,7 @@ final appRouter = GoRouter(
     final goingToLogin = state.uri.toString() == AppRoutes.login;
 
     if (!isLoggedIn && !goingToLogin) {
-      return AppRoutes.login; // force redirect to login
+      // return AppRoutes.login; // force redirect to login
     }
     if (isLoggedIn && goingToLogin) {
       return AppRoutes.home; // go to home tab after login

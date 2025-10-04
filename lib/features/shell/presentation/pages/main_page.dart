@@ -14,7 +14,7 @@ class MainPage extends StatelessWidget {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthUnauthenticated) {
-          LoginRoute().go(context);
+          // LoginRoute().go(context);
         }
       },
       child: Scaffold(

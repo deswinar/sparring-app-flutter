@@ -1,0 +1,95 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:230143639151925708",
+      "lastPropertyId": "6:5247045065452711033",
+      "name": "CityObjectBoxModel",
+      "properties": [
+        {
+          "id": "1:6970346735529922786",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:5034879458578073847",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "3:3069547854874897911",
+          "name": "type",
+          "type": 9
+        },
+        {
+          "id": "4:8970514988130495666",
+          "name": "provinceId",
+          "indexId": "1:5127875502394651541",
+          "type": 11,
+          "flags": 520,
+          "relationTarget": "ProvinceObjectBoxModel"
+        },
+        {
+          "id": "5:8120808602898857644",
+          "name": "apiId",
+          "type": 6
+        },
+        {
+          "id": "6:5247045065452711033",
+          "name": "nameFull",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "2:3028688531042466591",
+      "lastPropertyId": "4:7942404423294670135",
+      "name": "ProvinceObjectBoxModel",
+      "properties": [
+        {
+          "id": "1:8423695161568557234",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:3039226057469466635",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "3:3577719975553479409",
+          "name": "abbreviation",
+          "type": 9
+        },
+        {
+          "id": "4:7942404423294670135",
+          "name": "apiId",
+          "type": 6
+        }
+      ],
+      "relations": [
+        {
+          "id": "1:1287288034681465683",
+          "name": "cities",
+          "targetId": "1:230143639151925708"
+        }
+      ]
+    }
+  ],
+  "lastEntityId": "2:3028688531042466591",
+  "lastIndexId": "1:5127875502394651541",
+  "lastRelationId": "1:1287288034681465683",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [],
+  "retiredRelationUids": [],
+  "version": 1
+}

@@ -19,6 +19,11 @@ class FailureMapper {
           message: exception.message,
           code: exception.code,
         );
+      case FormatException _:
+        return FormatFailure(
+          message: exception.message,
+          code: exception.code,
+        );
       case ValidationException _:
         return ValidationFailure(
           message: exception.message,

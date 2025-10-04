@@ -22,6 +22,10 @@ class CacheFailure extends Failure {
   const CacheFailure({required super.message, required super.code});
 }
 
+class FormatFailure extends Failure {
+  const FormatFailure({required super.message, required super.code});
+}
+
 class ValidationFailure extends Failure {
   const ValidationFailure({required super.message, required super.code});
 }

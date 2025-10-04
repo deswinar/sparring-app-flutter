@@ -16,7 +16,7 @@ abstract class SportCategoryRemoteDataSource {
   factory SportCategoryRemoteDataSource(Dio dio) = _SportCategoryRemoteDataSource;
 
   @GET(ApiConstants.sportCategoriesEndpoint)
-  Future<PaginatedResponseModel<SportCategoryModel>> getSportCategories(
+  Future<BaseResponseModel<PaginatedResponseModel<SportCategoryModel>>> getSportCategories(
     @Queries() PaginationRequestModel request,
   );
 

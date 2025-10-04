@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_sparring/core/bloc/app_bloc_observer.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../domain/entities/province_entity.dart';
@@ -84,6 +85,8 @@ class LocationCubit extends Cubit<LocationState> {
         perPage: perPage,
       ),
     );
+
+    logger.i('loadCitiesByProvince: cities = ${state.cities}');
 
     result.fold(
       (failure) => emit(state.copyWith(

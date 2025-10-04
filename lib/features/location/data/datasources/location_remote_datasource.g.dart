@@ -20,7 +20,7 @@ class _LocationRemoteDataSource implements LocationRemoteDataSource {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<PaginatedResponseModel<ProvinceModel>> getProvinces(
+  Future<BaseResponseModel<PaginatedResponseModel<ProvinceModel>>> getProvinces(
     PaginationRequestModel request,
   ) async {
     final _extra = <String, dynamic>{};
@@ -28,22 +28,70 @@ class _LocationRemoteDataSource implements LocationRemoteDataSource {
     queryParameters.addAll(request.toJson());
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<PaginatedResponseModel<ProvinceModel>>(
-      Options(method: 'GET', headers: _headers, extra: _extra)
-          .compose(
-            _dio.options,
-            '/location/provinces',
-            queryParameters: queryParameters,
-            data: _data,
-          )
-          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
-    );
+    final _options =
+        _setStreamType<
+          BaseResponseModel<PaginatedResponseModel<ProvinceModel>>
+        >(
+          Options(method: 'GET', headers: _headers, extra: _extra)
+              .compose(
+                _dio.options,
+                '/location/provinces',
+                queryParameters: queryParameters,
+                data: _data,
+              )
+              .copyWith(
+                baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl),
+              ),
+        );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late PaginatedResponseModel<ProvinceModel> _value;
+    late BaseResponseModel<PaginatedResponseModel<ProvinceModel>> _value;
     try {
-      _value = PaginatedResponseModel<ProvinceModel>.fromJson(
+      _value =
+          BaseResponseModel<PaginatedResponseModel<ProvinceModel>>.fromJson(
+            _result.data!,
+            (json) => PaginatedResponseModel<ProvinceModel>.fromJson(
+              json as Map<String, dynamic>,
+              (json) => ProvinceModel.fromJson(json as Map<String, dynamic>),
+            ),
+          );
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<BaseResponseModel<PaginatedResponseModel<CityModel>>> getCities(
+    PaginationRequestModel request,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.addAll(request.toJson());
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options =
+        _setStreamType<BaseResponseModel<PaginatedResponseModel<CityModel>>>(
+          Options(method: 'GET', headers: _headers, extra: _extra)
+              .compose(
+                _dio.options,
+                '/location/cities',
+                queryParameters: queryParameters,
+                data: _data,
+              )
+              .copyWith(
+                baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl),
+              ),
+        );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late BaseResponseModel<PaginatedResponseModel<CityModel>> _value;
+    try {
+      _value = BaseResponseModel<PaginatedResponseModel<CityModel>>.fromJson(
         _result.data!,
-        (json) => ProvinceModel.fromJson(json as Map<String, dynamic>),
+        (json) => PaginatedResponseModel<CityModel>.fromJson(
+          json as Map<String, dynamic>,
+          (json) => CityModel.fromJson(json as Map<String, dynamic>),
+        ),
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
@@ -53,64 +101,35 @@ class _LocationRemoteDataSource implements LocationRemoteDataSource {
   }
 
   @override
-  Future<PaginatedResponseModel<CityModel>> getCities(
-    PaginationRequestModel request,
-  ) async {
+  Future<BaseResponseModel<PaginatedResponseModel<CityModel>>>
+  getCitiesByProvince(int provinceId, PaginationRequestModel request) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.addAll(request.toJson());
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<PaginatedResponseModel<CityModel>>(
-      Options(method: 'GET', headers: _headers, extra: _extra)
-          .compose(
-            _dio.options,
-            '/location/cities',
-            queryParameters: queryParameters,
-            data: _data,
-          )
-          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
-    );
+    final _options =
+        _setStreamType<BaseResponseModel<PaginatedResponseModel<CityModel>>>(
+          Options(method: 'GET', headers: _headers, extra: _extra)
+              .compose(
+                _dio.options,
+                '/location/cities/${provinceId}',
+                queryParameters: queryParameters,
+                data: _data,
+              )
+              .copyWith(
+                baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl),
+              ),
+        );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late PaginatedResponseModel<CityModel> _value;
+    late BaseResponseModel<PaginatedResponseModel<CityModel>> _value;
     try {
-      _value = PaginatedResponseModel<CityModel>.fromJson(
+      _value = BaseResponseModel<PaginatedResponseModel<CityModel>>.fromJson(
         _result.data!,
-        (json) => CityModel.fromJson(json as Map<String, dynamic>),
-      );
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
-      rethrow;
-    }
-    return _value;
-  }
-
-  @override
-  Future<PaginatedResponseModel<CityModel>> getCitiesByProvince(
-    int provinceId,
-    PaginationRequestModel request,
-  ) async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    queryParameters.addAll(request.toJson());
-    final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<PaginatedResponseModel<CityModel>>(
-      Options(method: 'GET', headers: _headers, extra: _extra)
-          .compose(
-            _dio.options,
-            '/location/cities/${provinceId}',
-            queryParameters: queryParameters,
-            data: _data,
-          )
-          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
-    );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late PaginatedResponseModel<CityModel> _value;
-    try {
-      _value = PaginatedResponseModel<CityModel>.fromJson(
-        _result.data!,
-        (json) => CityModel.fromJson(json as Map<String, dynamic>),
+        (json) => PaginatedResponseModel<CityModel>.fromJson(
+          json as Map<String, dynamic>,
+          (json) => CityModel.fromJson(json as Map<String, dynamic>),
+        ),
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);

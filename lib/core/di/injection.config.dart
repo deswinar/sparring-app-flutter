@@ -13,6 +13,10 @@ import 'package:dio/dio.dart' as _i361;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as _i558;
 import 'package:flutter_sparring/core/di/register_module.dart' as _i769;
 import 'package:flutter_sparring/core/network/dio_client.dart' as _i599;
+import 'package:flutter_sparring/core/storage/objectbox/objectbox_module.dart'
+    as _i179;
+import 'package:flutter_sparring/core/storage/objectbox/objectbox_store.dart'
+    as _i451;
 import 'package:flutter_sparring/core/storage/secure_storage_service.dart'
     as _i630;
 import 'package:flutter_sparring/features/auth/data/datasources/auth_local_datasource.dart'
@@ -33,6 +37,8 @@ import 'package:flutter_sparring/features/auth/domain/usecases/register_usecase.
     as _i492;
 import 'package:flutter_sparring/features/auth/presentation/blocs/auth_cubit.dart'
     as _i889;
+import 'package:flutter_sparring/features/location/data/datasources/location_local_datasource.dart'
+    as _i832;
 import 'package:flutter_sparring/features/location/data/datasources/location_remote_datasource.dart'
     as _i819;
 import 'package:flutter_sparring/features/location/data/repositories/location_repository_impl.dart'
@@ -63,6 +69,8 @@ import 'package:flutter_sparring/features/sport_activity/domain/usecases/get_spo
     as _i310;
 import 'package:flutter_sparring/features/sport_activity/domain/usecases/update_sport_activity_usecase.dart'
     as _i439;
+import 'package:flutter_sparring/features/sport_activity/presentation/blocs/sport_activity_cubit.dart'
+    as _i790;
 import 'package:flutter_sparring/features/sport_category/data/datasources/sport_category_remote_datasource.dart'
     as _i498;
 import 'package:flutter_sparring/features/sport_category/data/repositories/sport_category_repository_impl.dart'
@@ -84,14 +92,22 @@ import 'package:injectable/injectable.dart' as _i526;
 
 extension GetItInjectableX on _i174.GetIt {
   // initializes the registration of main-scope dependencies inside of GetIt
-  _i174.GetIt init({
+  Future<_i174.GetIt> init({
     String? environment,
     _i526.EnvironmentFilter? environmentFilter,
-  }) {
+  }) async {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
+    final objectBoxModule = _$ObjectBoxModule();
     final registerModule = _$RegisterModule();
+    await gh.singletonAsync<_i451.ObjectBoxStore>(
+      () => objectBoxModule.provideObjectBox(),
+      preResolve: true,
+    );
     gh.lazySingleton<_i558.FlutterSecureStorage>(
       () => registerModule.secureStorage,
+    );
+    gh.lazySingleton<_i832.LocationLocalDataSource>(
+      () => _i832.LocationLocalDataSource(gh<_i451.ObjectBoxStore>()),
     );
     gh.singleton<_i630.SecureStorageService>(
       () => _i630.SecureStorageServiceImpl(gh<_i558.FlutterSecureStorage>()),
@@ -111,11 +127,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i819.LocationRemoteDataSource>(
       () => _i819.LocationRemoteDataSource.new(gh<_i361.Dio>()),
     );
-    gh.lazySingleton<_i498.SportCategoryRemoteDataSource>(
-      () => _i498.SportCategoryRemoteDataSource.new(gh<_i361.Dio>()),
-    );
     gh.lazySingleton<_i455.SportActivityRemoteDataSource>(
       () => _i455.SportActivityRemoteDataSource.new(gh<_i361.Dio>()),
+    );
+    gh.lazySingleton<_i498.SportCategoryRemoteDataSource>(
+      () => _i498.SportCategoryRemoteDataSource.new(gh<_i361.Dio>()),
     );
     gh.lazySingleton<_i57.SportCategoryRepository>(
       () => _i251.SportCategoryRepositoryImpl(
@@ -127,11 +143,26 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i455.SportActivityRemoteDataSource>(),
       ),
     );
+    gh.lazySingleton<_i583.LocationRepository>(
+      () => _i540.LocationRepositoryImpl(
+        gh<_i819.LocationRemoteDataSource>(),
+        gh<_i832.LocationLocalDataSource>(),
+      ),
+    );
     gh.singleton<_i155.AuthRepository>(
       () => _i223.AuthRepositoryImpl(
         gh<_i860.AuthRemoteDataSource>(),
         gh<_i711.AuthLocalDataSource>(),
       ),
+    );
+    gh.factory<_i62.GetCitiesByProvinceUseCase>(
+      () => _i62.GetCitiesByProvinceUseCase(gh<_i583.LocationRepository>()),
+    );
+    gh.factory<_i497.GetCitiesUseCase>(
+      () => _i497.GetCitiesUseCase(gh<_i583.LocationRepository>()),
+    );
+    gh.factory<_i585.GetProvincesUseCase>(
+      () => _i585.GetProvincesUseCase(gh<_i583.LocationRepository>()),
     );
     gh.factory<_i1063.GetCurrentUserUseCase>(
       () => _i1063.GetCurrentUserUseCase(gh<_i155.AuthRepository>()),
@@ -145,9 +176,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i492.RegisterUseCase>(
       () => _i492.RegisterUseCase(gh<_i155.AuthRepository>()),
     );
-    gh.lazySingleton<_i583.LocationRepository>(
-      () => _i540.LocationRepositoryImpl(gh<_i819.LocationRemoteDataSource>()),
-    );
     gh.factory<_i889.AuthCubit>(
       () => _i889.AuthCubit(
         gh<_i455.LoginUseCase>(),
@@ -156,15 +184,15 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i1063.GetCurrentUserUseCase>(),
       ),
     );
-    gh.factory<_i368.GetSportCategoriesUseCase>(
-      () => _i368.GetSportCategoriesUseCase(gh<_i57.SportCategoryRepository>()),
-    );
     gh.factory<_i99.CreateSportCategoryUsecase>(
       () => _i99.CreateSportCategoryUsecase(gh<_i57.SportCategoryRepository>()),
     );
     gh.factory<_i450.DeleteSportCategoryUsecase>(
       () =>
           _i450.DeleteSportCategoryUsecase(gh<_i57.SportCategoryRepository>()),
+    );
+    gh.factory<_i368.GetSportCategoriesUseCase>(
+      () => _i368.GetSportCategoriesUseCase(gh<_i57.SportCategoryRepository>()),
     );
     gh.factory<_i4.UpdateSportCategoryUsecase>(
       () => _i4.UpdateSportCategoryUsecase(gh<_i57.SportCategoryRepository>()),
@@ -190,17 +218,8 @@ extension GetItInjectableX on _i174.GetIt {
       () =>
           _i439.UpdateSportActivityUsecase(gh<_i698.SportActivityRepository>()),
     );
-    gh.factory<_i62.GetCitiesByProvinceUseCase>(
-      () => _i62.GetCitiesByProvinceUseCase(gh<_i583.LocationRepository>()),
-    );
-    gh.factory<_i497.GetCitiesUseCase>(
-      () => _i497.GetCitiesUseCase(gh<_i583.LocationRepository>()),
-    );
-    gh.factory<_i585.GetProvincesUseCase>(
-      () => _i585.GetProvincesUseCase(gh<_i583.LocationRepository>()),
-    );
-    gh.factory<_i693.SportCategoryCubit>(
-      () => _i693.SportCategoryCubit(gh<_i368.GetSportCategoriesUseCase>()),
+    gh.factory<_i790.SportActivityCubit>(
+      () => _i790.SportActivityCubit(gh<_i789.GetSportActivitiesUseCase>()),
     );
     gh.factory<_i1007.LocationCubit>(
       () => _i1007.LocationCubit(
@@ -209,8 +228,13 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i62.GetCitiesByProvinceUseCase>(),
       ),
     );
+    gh.factory<_i693.SportCategoryCubit>(
+      () => _i693.SportCategoryCubit(gh<_i368.GetSportCategoriesUseCase>()),
+    );
     return this;
   }
 }
+
+class _$ObjectBoxModule extends _i179.ObjectBoxModule {}
 
 class _$RegisterModule extends _i769.RegisterModule {}

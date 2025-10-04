@@ -27,7 +27,7 @@ class SportCategoryRepositoryImpl implements SportCategoryRepository {
           page: page,
         ),
       );
-      return Right(response.data.map((e) => e.toEntity()).toList());
+      return Right(response.result.data.map((e) => e.toEntity()).toList());
     } catch (e) {
       final exception = ApiErrorHandler.handle(e);
       return Left(FailureMapper.fromException(exception));

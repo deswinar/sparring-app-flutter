@@ -7,15 +7,21 @@ part of 'city_model.dart';
 // **************************************************************************
 
 CityModel _$CityModelFromJson(Map<String, dynamic> json) => CityModel(
-  id: (json['id'] as num).toInt(),
-  provinceId: (json['provinceId'] as num).toInt(),
-  name: json['name'] as String,
-  type: json['type'] as String,
+  cityProvinceId: (json['province_id'] as num).toInt(),
+  cityId: (json['city_id'] as num).toInt(),
+  cityName: json['city_name'] as String,
+  cityNameFull: json['city_name_full'] as String,
+  cityType: json['city_type'] as String,
+  cityLat: (json['city_lat'] as num?)?.toDouble(),
+  cityLon: (json['city_lon'] as num?)?.toDouble(),
 );
 
 Map<String, dynamic> _$CityModelToJson(CityModel instance) => <String, dynamic>{
-  'id': instance.id,
-  'provinceId': instance.provinceId,
-  'name': instance.name,
-  'type': instance.type,
+  'city_id': instance.cityId,
+  'province_id': instance.cityProvinceId,
+  'city_name': instance.cityName,
+  'city_name_full': instance.cityNameFull,
+  'city_type': instance.cityType,
+  'city_lat': instance.cityLat,
+  'city_lon': instance.cityLon,
 };

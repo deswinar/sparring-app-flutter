@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_sparring/core/models/base_response_model.dart';
 import 'package:flutter_sparring/core/models/paginated_response_model.dart';
 import 'package:flutter_sparring/core/models/pagination_request_model.dart';
 import 'package:injectable/injectable.dart';
@@ -16,17 +17,17 @@ abstract class LocationRemoteDataSource {
   factory LocationRemoteDataSource(Dio dio) = _LocationRemoteDataSource;
 
   @GET(ApiConstants.provincesEndpoint)
-  Future<PaginatedResponseModel<ProvinceModel>> getProvinces(
+  Future<BaseResponseModel<PaginatedResponseModel<ProvinceModel>>> getProvinces(
     @Queries() PaginationRequestModel request,
   );
 
   @GET(ApiConstants.citiesEndpoint)
-  Future<PaginatedResponseModel<CityModel>> getCities(
+  Future<BaseResponseModel<PaginatedResponseModel<CityModel>>> getCities(
     @Queries() PaginationRequestModel request,
   );
 
   @GET(ApiConstants.citiesByProvinceIdEndpoint)
-  Future<PaginatedResponseModel<CityModel>> getCitiesByProvince(
+  Future<BaseResponseModel<PaginatedResponseModel<CityModel>>> getCitiesByProvince(
     @Path('provinceId') int provinceId,
     @Queries() PaginationRequestModel request,
   );

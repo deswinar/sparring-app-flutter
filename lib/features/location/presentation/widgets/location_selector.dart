@@ -47,6 +47,7 @@ class LocationSelector extends StatelessWidget {
                 return state.provinces;
               },
               itemAsString: (p) => p.name,
+              compareFn: (p1, p2) => p1.id == p2.id,
               decoratorProps: DropDownDecoratorProps(
                 decoration: InputDecoration(
                   labelText: provinceLabel,
@@ -87,6 +88,7 @@ class LocationSelector extends StatelessWidget {
                     return state.cities;
                   },
                   itemAsString: (c) => c.name,
+                  compareFn: (c1, c2) => c1.id == c2.id,
                   decoratorProps: DropDownDecoratorProps(
                     decoration: InputDecoration(
                       labelText: cityLabel,
@@ -122,6 +124,7 @@ class LocationSelector extends StatelessWidget {
                     return state.cities;
                   },
                   itemAsString: (c) => c.name,
+                  compareFn: (c1, c2) => c1.id == c2.id,
                   decoratorProps: DropDownDecoratorProps(
                     decoration: InputDecoration(
                       labelText: cityLabel,
