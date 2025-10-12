@@ -16,8 +16,8 @@ abstract class SportActivityRemoteDataSource {
   @factoryMethod
   factory SportActivityRemoteDataSource(Dio dio) = _SportActivityRemoteDataSource;
 
-  @GET(ApiConstants.sportCategoriesEndpoint)
-  Future<PaginatedResponseModel<SportActivityModel>> getSportActivities(
+  @GET(ApiConstants.sportActivitiesEndpoint)
+  Future<BaseResponseModel<PaginatedResponseModel<SportActivityModel>>> getSportActivities(
     @Queries() SportActivityListRequestModel request,
   );
 

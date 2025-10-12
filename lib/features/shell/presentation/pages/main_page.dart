@@ -14,7 +14,7 @@ class MainPage extends StatelessWidget {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthUnauthenticated) {
-          // LoginRoute().go(context);
+          LoginRoute().go(context);
         }
       },
       child: Scaffold(
@@ -31,10 +31,8 @@ class _MainBottomNav extends StatelessWidget {
     final location = GoRouterState.of(context).uri.toString();
 
     int currentIndex = 0;
-    if (location.startsWith(AppRoutes.search)) currentIndex = 1;
-    if (location.startsWith(AppRoutes.bookings)) currentIndex = 2;
-    if (location.startsWith(AppRoutes.messages)) currentIndex = 3;
-    if (location.startsWith(AppRoutes.profile)) currentIndex = 4;
+    if (location.startsWith(AppRoutes.bookings)) currentIndex = 1;
+    if (location.startsWith(AppRoutes.profile)) currentIndex = 2;
 
     return BottomNavigationBar(
       currentIndex: currentIndex,
@@ -45,15 +43,9 @@ class _MainBottomNav extends StatelessWidget {
             context.go(AppRoutes.home);
             break;
           case 1:
-            context.go(AppRoutes.search);
-            break;
-          case 2:
             context.go(AppRoutes.bookings);
             break;
-          case 3:
-            context.go(AppRoutes.messages);
-            break;
-          case 4:
+          case 2:
             context.go(AppRoutes.profile);
             break;
         }
@@ -64,16 +56,8 @@ class _MainBottomNav extends StatelessWidget {
           label: "Home",
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.search_outlined),
-          label: "Search",
-        ),
-        BottomNavigationBarItem(
           icon: Icon(Icons.calendar_today_outlined),
           label: "Bookings",
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.message_outlined),
-          label: "Messages",
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person_outline),

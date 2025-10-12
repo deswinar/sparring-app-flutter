@@ -6,52 +6,46 @@ import 'package:flutter_sparring/features/sport_activity/domain/entities/sport_a
 
 part 'sport_activity_model.g.dart';
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable(explicitToJson: true, fieldRename: FieldRename.snake)
 class SportActivityModel {
   final int id;
-  final String title;
+  final String? title;
   final int? price;
 
-  @JsonKey(name: 'price_discount')
   final int? priceDiscount;
 
-  final int slot;
-  final String address;
+  final int? slot;
+  final String? address;
 
-  @JsonKey(name: 'activity_date')
-  final String activityDate;
+  final String? activityDate;
 
-  @JsonKey(name: 'start_time')
-  final String startTime;
+  final String? startTime;
 
-  @JsonKey(name: 'end_time')
-  final String endTime;
+  final String? endTime;
 
-  @JsonKey(name: 'created_at')
-  final String createdAt;
+  final String? createdAt;
 
-  @JsonKey(name: 'updated_at')
-  final String updatedAt;
+  final String? updatedAt;
 
-  final UserModel organizer;
-  final CityModel city;
-  final List<ParticipantModel> participants;
+  final UserModel? organizer;
+  final CityModel? city;
+  final List<ParticipantModel>? participants;
 
   const SportActivityModel({
     required this.id,
-    required this.title,
-    required this.price,
-    required this.priceDiscount,
-    required this.slot,
-    required this.address,
-    required this.activityDate,
-    required this.startTime,
-    required this.endTime,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.organizer,
-    required this.city,
-    required this.participants,
+    this.title,
+    this.price,
+    this.priceDiscount,
+    this.slot,
+    this.address,
+    this.activityDate,
+    this.startTime,
+    this.endTime,
+    this.createdAt,
+    this.updatedAt,
+    this.organizer,
+    this.city,
+    this.participants,
   });
 
   factory SportActivityModel.fromJson(Map<String, dynamic> json) =>
@@ -61,18 +55,25 @@ class SportActivityModel {
 
   SportActivityEntity toEntity() => SportActivityEntity(
         id: id,
-        title: title,
+        title: title ?? '',
         price: price,
         priceDiscount: priceDiscount,
-        slot: slot,
-        address: address,
-        activityDate: DateTime.parse(activityDate),
-        startTime: startTime,
-        endTime: endTime,
-        createdAt: DateTime.parse(createdAt),
-        updatedAt: DateTime.parse(updatedAt),
-        organizer: organizer.toEntity(),
-        city: city.toEntity(),
-        participants: participants.map((e) => e.toEntity()).toList(),
+        slot: slot ?? 0,
+        address: address ?? '',
+        activityDate: activityDate != null
+            ? DateTime.tryParse(activityDate!) ?? DateTime.now()
+            : DateTime.now(),
+        startTime: startTime ?? '',
+        endTime: endTime ?? '',
+        createdAt: createdAt != null
+            ? DateTime.tryParse(createdAt!) ?? DateTime.now()
+            : DateTime.now(),
+        updatedAt: updatedAt != null
+            ? DateTime.tryParse(updatedAt!) ?? DateTime.now()
+            : DateTime.now(),
+        organizer: organizer?.toEntity(),
+        city: city?.toEntity(),
+        participants:
+            participants?.map((e) => e.toEntity()).toList() ?? const [],
       );
 }

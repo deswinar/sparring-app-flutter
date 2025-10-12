@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_sparring/core/utils/currency_formatter.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_sparring/features/sport_activity/domain/entities/sport_activity_entity.dart';
 
@@ -22,7 +23,7 @@ class SportActivityDetails extends StatelessWidget {
     final textTheme = theme.textTheme;
     final colorScheme = theme.colorScheme;
 
-    final availableSlots = activity.slot - activity.participants.length;
+    final availableSlots = activity.slot! - activity.participants!.length;
     final isFull = availableSlots <= 0;
 
     return SingleChildScrollView(
@@ -32,7 +33,7 @@ class SportActivityDetails extends StatelessWidget {
         children: [
           /// Title
           Text(
-            activity.title,
+            activity.title ?? "Untitled Activity",
             style: textTheme.headlineSmall?.copyWith(
               fontWeight: FontWeight.bold,
               color: colorScheme.onSurface,
@@ -46,8 +47,8 @@ class SportActivityDetails extends StatelessWidget {
               CircleAvatar(
                 radius: 20,
                 child: Text(
-                  activity.organizer.name.isNotEmpty
-                      ? activity.organizer.name[0].toUpperCase()
+                  activity.organizer?.name != null
+                      ? activity.organizer!.name[0].toUpperCase()
                       : '?',
                   style: textTheme.bodyMedium?.copyWith(
                     color: colorScheme.onPrimary,
@@ -57,7 +58,7 @@ class SportActivityDetails extends StatelessWidget {
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
-                  'Organized by ${activity.organizer.name}',
+                  'Organized by ${activity.organizer?.name ?? 'Unknown'}',
                   style: textTheme.bodyMedium?.copyWith(
                     color: colorScheme.onSurfaceVariant,
                   ),
@@ -88,7 +89,7 @@ class SportActivityDetails extends StatelessWidget {
           /// Date & Time
           _InfoRow(
             icon: Icons.calendar_today,
-            label: _formatDate(activity.activityDate),
+            label: _formatDate(activity.activityDate ?? DateTime.now()),
           ),
           const SizedBox(height: 8),
           _InfoRow(
@@ -100,7 +101,7 @@ class SportActivityDetails extends StatelessWidget {
           /// Location
           _InfoRow(
             icon: Icons.location_on,
-            label: activity.address,
+            label: activity.address ?? "No address provided",
             maxLines: 2,
           ),
           const SizedBox(height: 16),
@@ -108,7 +109,7 @@ class SportActivityDetails extends StatelessWidget {
           /// Price
           if (activity.price != null && activity.price! > 0)
             Text(
-              'Rp ${activity.price}',
+              CurrencyFormatter.format(activity.price!),
               style: textTheme.titleMedium?.copyWith(
                 color: colorScheme.primary,
                 fontWeight: FontWeight.bold,
@@ -133,7 +134,7 @@ class SportActivityDetails extends StatelessWidget {
           Wrap(
             spacing: 12,
             runSpacing: 12,
-            children: activity.participants.map((p) {
+            children: activity.participants!.map((p) {
               return Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [

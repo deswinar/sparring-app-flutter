@@ -32,8 +32,6 @@ class LocationSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return BlocBuilder<LocationCubit, LocationState>(
       builder: (context, state) {
         return Column(
@@ -78,8 +76,6 @@ class LocationSelector extends StatelessWidget {
 
             /// City Selector (shown only if province is selected)
             if (state.selectedProvince != null) ...[
-              Text(cityLabel, style: theme.textTheme.titleMedium),
-              const SizedBox(height: 8),
 
               if (allowMultipleCities)
                 DropdownSearch<CityEntity>.multiSelection(
@@ -112,7 +108,7 @@ class LocationSelector extends StatelessWidget {
                         context.read<LocationCubit>().toggleCitySelection(city);
                       }
                     }
-                    onCitiesSelected?.call(state.selectedCities);
+                    onCitiesSelected?.call(cities);
                   },
                 )
               else
@@ -143,7 +139,7 @@ class LocationSelector extends StatelessWidget {
                   onChanged: (city) {
                     if (city != null) {
                       context.read<LocationCubit>().toggleCitySelection(city);
-                      onCitiesSelected?.call(state.selectedCities);
+                      onCitiesSelected?.call([city]);
                     }
                   },
                 ),

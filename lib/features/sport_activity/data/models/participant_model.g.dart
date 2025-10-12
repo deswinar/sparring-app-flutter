@@ -9,6 +9,7 @@ part of 'participant_model.dart';
 ParticipantModel _$ParticipantModelFromJson(Map<String, dynamic> json) =>
     ParticipantModel(
       id: (json['id'] as num).toInt(),
+      sportActivityId: (json['sport_activity_id'] as num).toInt(),
       userId: (json['user_id'] as num).toInt(),
       user: UserModel.fromJson(json['user'] as Map<String, dynamic>),
     );
@@ -16,6 +17,7 @@ ParticipantModel _$ParticipantModelFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$ParticipantModelToJson(ParticipantModel instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'sport_activity_id': instance.sportActivityId,
       'user_id': instance.userId,
       'user': instance.user.toJson(),
     };

@@ -18,14 +18,15 @@ class SportActivityCubit extends Cubit<SportActivityState> {
     GetSportActivitiesParams params = const GetSportActivitiesParams(),
     bool refresh = false,
   }) async {
-    if (refresh) emit(const SportActivityRefreshing());
-
-    // keep old state if pagination
     if (state is SportActivityLoading || state is SportActivityRefreshing) {
-      return;
+      return; // prevent double request only if already loading
     }
 
-    if (!refresh) emit(const SportActivityLoading());
+    if (refresh) {
+      emit(const SportActivityRefreshing());
+    } else {
+      emit(const SportActivityLoading());
+    }
 
     final result = await _getSportActivities(params);
 
@@ -43,19 +44,11 @@ class SportActivityCubit extends Cubit<SportActivityState> {
     if (state is! SportActivityLoaded) return;
     final current = state as SportActivityLoaded;
 
-    // prevent double loading
-    if (current.isLoadingMore) return;
+    if (current.isLoadingMore || !current.hasMore) return;
 
     emit(current.copyWith(isLoadingMore: true));
 
-    final nextParams =
-        GetSportActivitiesParams(
-          page: current.currentPage + 1,
-          perPage: params.perPage,
-          search: params.search,
-          sportCategoryId: params.sportCategoryId,
-          cityId: params.cityId,
-        );
+    final nextParams = params.copyWith(page: current.currentPage + 1);
 
     final result = await _getSportActivities(nextParams);
 
@@ -64,7 +57,7 @@ class SportActivityCubit extends Cubit<SportActivityState> {
       (activities) => emit(current.copyWith(
         activities: [...current.activities, ...activities],
         currentPage: nextParams.page,
-        hasMore: activities.length >= params.perPage,
+        hasMore: activities.length >= nextParams.perPage,
         isLoadingMore: false,
       )),
     );

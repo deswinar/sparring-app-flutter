@@ -23,7 +23,7 @@ class LocationCubit extends Cubit<LocationState> {
     this._getCitiesByProvinceUseCase,
   ) : super(const LocationState());
 
-  Future<void> loadProvinces({int page = 1, int perPage = 10}) async {
+  Future<void> loadProvinces({int page = 1, int perPage = 50}) async {
     emit(state.copyWith(isLoading: true, errorMessage: null));
 
     final result = await _getProvincesUseCase(
@@ -48,7 +48,7 @@ class LocationCubit extends Cubit<LocationState> {
   Future<void> loadCities({
     int provinceId = 0,
     int page = 1,
-    int perPage = 10,
+    int perPage = 30,
   }) async {
     emit(state.copyWith(isLoading: true, errorMessage: null));
 
@@ -74,7 +74,7 @@ class LocationCubit extends Cubit<LocationState> {
   Future<void> loadCitiesByProvince({
     required int provinceId,
     int page = 1,
-    int perPage = 10,
+    int perPage = 30,
   }) async {
     emit(state.copyWith(isLoading: true, errorMessage: null));
 

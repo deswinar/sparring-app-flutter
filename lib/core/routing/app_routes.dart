@@ -8,4 +8,6 @@ class AppRoutes {
   static const String bookings = '/bookings';
   static const String messages = '/messages';
   static const String profile = '/profile';
+
+  static const String sportActivityDetail = '/sport-activity/:id';
 }

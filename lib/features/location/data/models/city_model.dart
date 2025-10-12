@@ -9,7 +9,6 @@ class CityModel extends CityEntity {
   final int cityId;
 
   @JsonKey(name: 'province_id')
-  // ignore: overridden_fields
   final int cityProvinceId;
 
   @JsonKey(name: 'city_name')

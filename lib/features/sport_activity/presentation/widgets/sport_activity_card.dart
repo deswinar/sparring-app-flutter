@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter_sparring/core/utils/currency_formatter.dart';
+import 'package:flutter_sparring/core/utils/date_formatter.dart';
 import 'package:flutter_sparring/features/sport_activity/domain/entities/sport_activity_entity.dart';
 
 class SportActivityCard extends StatelessWidget {
@@ -11,10 +12,6 @@ class SportActivityCard extends StatelessWidget {
     required this.activity,
     this.onTap,
   });
-
-  String _formatDate(DateTime date) {
-    return DateFormat('EEE, d MMM yyyy').format(date);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +37,7 @@ class SportActivityCard extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      activity.title,
+                      activity.title ?? "Untitled Activity",
                       style: textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                         color: colorScheme.onSurface,
@@ -49,19 +46,36 @@ class SportActivityCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                  if (activity.price != null && activity.price! > 0)
-                    Text(
-                      'Rp ${activity.price}',
-                      style: textTheme.titleSmall?.copyWith(
-                        color: colorScheme.primary,
-                        fontWeight: FontWeight.w600,
-                      ),
+
+                  /// Price
+                  if (activity.priceDiscount != null &&
+                      activity.priceDiscount! > 0 &&
+                      (activity.priceDiscount! < (activity.price ?? 0)))
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          CurrencyFormatter.format(activity.price ?? 0),
+                          style: textTheme.bodySmall?.copyWith(
+                            color: colorScheme.onSurface.withValues(alpha: 0.6),
+                            decoration: TextDecoration.lineThrough,
+                          ),
+                        ),
+                        Text(
+                          CurrencyFormatter.format(activity.priceDiscount!),
+                          style: textTheme.titleSmall?.copyWith(
+                            color: colorScheme.primary,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
                     )
                   else
                     Text(
-                      'Free',
-                      style: textTheme.bodySmall?.copyWith(
-                        color: colorScheme.secondary,
+                      CurrencyFormatter.orFree(activity.price),
+                      style: textTheme.titleSmall?.copyWith(
+                        color: colorScheme.primary,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                 ],
@@ -74,7 +88,7 @@ class SportActivityCard extends StatelessWidget {
                   Icon(Icons.calendar_today, size: 16, color: colorScheme.primary),
                   const SizedBox(width: 6),
                   Text(
-                    _formatDate(activity.activityDate),
+                    DateFormatter.short(activity.activityDate ?? DateTime.now()),
                     style: textTheme.bodySmall,
                   ),
                   const SizedBox(width: 12),
@@ -95,7 +109,7 @@ class SportActivityCard extends StatelessWidget {
                   const SizedBox(width: 6),
                   Expanded(
                     child: Text(
-                      activity.address,
+                      activity.address ?? "No address provided",
                       style: textTheme.bodySmall,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -111,15 +125,15 @@ class SportActivityCard extends StatelessWidget {
                   CircleAvatar(
                     radius: 14,
                     child: Text(
-                      activity.organizer.name.isNotEmpty
-                          ? activity.organizer.name[0].toUpperCase()
+                      activity.organizer!.name.isNotEmpty
+                          ? activity.organizer!.name[0].toUpperCase()
                           : '?',
                       style: textTheme.bodySmall?.copyWith(color: colorScheme.onPrimary),
                     ),
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    activity.organizer.name,
+                    activity.organizer?.name ?? 'No name provided',
                     style: textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w500),
                   ),
                 ],
@@ -131,19 +145,21 @@ class SportActivityCard extends StatelessWidget {
                 spacing: 8,
                 runSpacing: 8,
                 children: [
-                  ...activity.participants.take(5).map((p) => CircleAvatar(
-                        radius: 14,
-                        child: Text(
-                          p.user.name.isNotEmpty ? p.user.name[0].toUpperCase() : '?',
-                          style: textTheme.bodySmall?.copyWith(color: colorScheme.onPrimary),
+                  ...activity.participants!.take(5).map(
+                        (p) => CircleAvatar(
+                          radius: 14,
+                          child: Text(
+                            p.user.name.isNotEmpty ? p.user.name[0].toUpperCase() : '?',
+                            style: textTheme.bodySmall?.copyWith(color: colorScheme.onPrimary),
+                          ),
                         ),
-                      )),
-                  if (activity.participants.length > 5)
+                      ),
+                  if (activity.participants!.length > 5)
                     CircleAvatar(
                       radius: 14,
                       backgroundColor: colorScheme.secondaryContainer,
                       child: Text(
-                        '+${activity.participants.length - 5}',
+                        '+${activity.participants!.length - 5}',
                         style: textTheme.bodySmall?.copyWith(
                           color: colorScheme.onSecondaryContainer,
                         ),

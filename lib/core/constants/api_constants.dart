@@ -37,7 +37,7 @@ class ApiConstants {
   // Transaction
   static const String allTransactionsEndpoint = '/all-transaction';
   static const String transactionByIdEndpoint = '/transaction/{id}';
-  static const String myTransactionEndpoint = '/my-transaction';
+  static const String myTransactionsEndpoint = '/my-transaction';
   static const String createTransactionEndpoint = '/transaction/create';
   static const String updateTransactionProofPaymentEndpoint = '/transaction/update-proof-payment/{id}';
   static const String updateTransactionStatusEndpoint = '/transaction/update-status/{id}';

@@ -20,31 +20,42 @@ class _SportActivityRemoteDataSource implements SportActivityRemoteDataSource {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<PaginatedResponseModel<SportActivityModel>> getSportActivities(
-    SportActivityListRequestModel request,
-  ) async {
+  Future<BaseResponseModel<PaginatedResponseModel<SportActivityModel>>>
+  getSportActivities(SportActivityListRequestModel request) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.addAll(request.toJson());
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<PaginatedResponseModel<SportActivityModel>>(
-      Options(method: 'GET', headers: _headers, extra: _extra)
-          .compose(
-            _dio.options,
-            '/sport-categories',
-            queryParameters: queryParameters,
-            data: _data,
-          )
-          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
-    );
+    final _options =
+        _setStreamType<
+          BaseResponseModel<PaginatedResponseModel<SportActivityModel>>
+        >(
+          Options(method: 'GET', headers: _headers, extra: _extra)
+              .compose(
+                _dio.options,
+                '/sport-activities',
+                queryParameters: queryParameters,
+                data: _data,
+              )
+              .copyWith(
+                baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl),
+              ),
+        );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late PaginatedResponseModel<SportActivityModel> _value;
+    late BaseResponseModel<PaginatedResponseModel<SportActivityModel>> _value;
     try {
-      _value = PaginatedResponseModel<SportActivityModel>.fromJson(
-        _result.data!,
-        (json) => SportActivityModel.fromJson(json as Map<String, dynamic>),
-      );
+      _value =
+          BaseResponseModel<
+            PaginatedResponseModel<SportActivityModel>
+          >.fromJson(
+            _result.data!,
+            (json) => PaginatedResponseModel<SportActivityModel>.fromJson(
+              json as Map<String, dynamic>,
+              (json) =>
+                  SportActivityModel.fromJson(json as Map<String, dynamic>),
+            ),
+          );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

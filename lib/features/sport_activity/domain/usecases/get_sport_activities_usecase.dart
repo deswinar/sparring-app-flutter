@@ -18,6 +18,22 @@ class GetSportActivitiesParams {
     this.sportCategoryId,
     this.cityId,
   });
+
+  GetSportActivitiesParams copyWith({
+    int? page,
+    int? perPage,
+    String? search,
+    int? sportCategoryId,
+    int? cityId,
+  }) {
+    return GetSportActivitiesParams(
+      page: page ?? this.page,
+      perPage: perPage ?? this.perPage,
+      search: search ?? this.search,
+      sportCategoryId: sportCategoryId ?? this.sportCategoryId,
+      cityId: cityId ?? this.cityId,
+    );
+  }
 }
 
 @injectable

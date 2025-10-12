@@ -8,6 +8,9 @@ part 'participant_model.g.dart';
 class ParticipantModel {
   final int id;
 
+  @JsonKey(name: 'sport_activity_id')
+  final int sportActivityId;
+
   @JsonKey(name: 'user_id')
   final int userId;
 
@@ -15,6 +18,7 @@ class ParticipantModel {
 
   const ParticipantModel({
     required this.id,
+    required this.sportActivityId,
     required this.userId,
     required this.user,
   });
@@ -26,6 +30,7 @@ class ParticipantModel {
 
   ParticipantEntity toEntity() => ParticipantEntity(
         id: id,
+        sportActivityId: sportActivityId,
         userId: userId,
         user: user.toEntity(),
       );
