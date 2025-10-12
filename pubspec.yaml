@@ -52,6 +52,8 @@ dependencies:
   lottie: ^3.3.1
   objectbox: ^4.3.1
   objectbox_flutter_libs: ^4.3.1
+  image_picker: ^1.2.0
+  flutter_native_splash: ^2.4.6
 
 dev_dependencies:
   flutter_test:
@@ -85,6 +87,7 @@ flutter:
   assets:
     - .env
     - assets/lottie/
+    - assets/images/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -117,3 +120,13 @@ objectbox:
   output_dir:
     lib: core/storage/objectbox
     test: test/storage/objectbox
+
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/images/logo.png
+  android: true
+  ios: true
+  web: false
+  android_12:
+    color: "#ffffff"
+    image: assets/images/logo.png
